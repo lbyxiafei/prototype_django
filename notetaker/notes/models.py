@@ -1,20 +1,33 @@
 from django.db import models
 
 class Bookmark(models.Model):
-    name = models.CharField(max_length=200)
-    tag = models.CharField(max_length=200)
+    bookmark = models.CharField(max_length=200)
     url = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
 
     def __str__(self) -> str:
-        return self.name
+        return self.bookmark
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=200)
-    tag = models.CharField(max_length=200)
+    post = models.CharField(max_length=200)
     content = models.TextField()
     pub_date = models.DateTimeField('date published')
 
     def __str__(self) -> str:
-        return self.title
+        return self.post
+
+class Tag(models.Model):
+    tag = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+    def __str__(self) -> str:
+        return self.tag
+
+class Tag2Bookmark(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    bookmark = models.ForeignKey(Bookmark, on_delete=models.CASCADE)
+
+class Tag2Post(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
