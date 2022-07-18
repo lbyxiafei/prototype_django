@@ -1,3 +1,8 @@
+# Conda/Python environment
+
+`conda create --name dj python=3.7.5 django`
+`conda activate dj`
+
 # Django Crash Course Commands
 `Kudos to Brad@TraversyMedia`
 
