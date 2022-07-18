@@ -27,7 +27,11 @@ class Tag(models.Model):
 class Tag2Bookmark(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     bookmark = models.ForeignKey(Bookmark, on_delete=models.CASCADE)
+    is_linked = models.BooleanField(default=True)
+    pub_date = models.DateTimeField('date published')
 
 class Tag2Post(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    is_linked = models.BooleanField(default=True)
+    pub_date = models.DateTimeField('date published')
