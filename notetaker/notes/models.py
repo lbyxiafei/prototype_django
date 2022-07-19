@@ -25,13 +25,19 @@ class Tag(models.Model):
         return self.tag
 
 class Tag2Bookmark(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    bookmark = models.ForeignKey(Bookmark, on_delete=models.CASCADE)
+    tag= models.ForeignKey(Tag, on_delete=models.CASCADE)
+    bookmark= models.ForeignKey(Bookmark, on_delete=models.CASCADE)
     is_linked = models.BooleanField(default=True)
     pub_date = models.DateTimeField('date published')
 
+    def __str__(self) -> str:
+        return f"{str(self.tag)}-{str(self.bookmark)}"
+
 class Tag2Post(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    tag= models.ForeignKey(Tag, on_delete=models.CASCADE)
+    post= models.ForeignKey(Post, on_delete=models.CASCADE)
     is_linked = models.BooleanField(default=True)
     pub_date = models.DateTimeField('date published')
+
+    def __str__(self) -> str:
+        return f"{str(self.tag)}-{str(self.post)}"
