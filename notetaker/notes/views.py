@@ -19,6 +19,7 @@ def bookmarks(request):
     elif request.method == 'POST':
         bookmarks_data = JSONParser().parse(request)
         bookmarks_serializer = BookmarkSerializer(data=bookmarks_data)
+        print(bookmarks_serializer)
         if bookmarks_serializer.is_valid():
             bookmarks_serializer.save()
             return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 

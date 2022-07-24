@@ -1,13 +1,20 @@
 from rest_framework import serializers
-from notes.models import Bookmark, Post, Tag, Tag2Bookmark, Tag2Post
+from notes.models import Bookmark, Post, Tag
 
 class BookmarkSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        return Bookmark.objects.create(**validated_data) 
+    tag = serializers.SlugRelatedField(
+        many = True,
+        read_only = True,
+        slug_field = 'tag'
+    )
 
     class Meta:
         model = Bookmark
-        fields = ('bookmark', 'url', 'pub_date')
+        fields = ('title', 'url', 'tag', 'pub_date')
+
+    def create(self, validated_data):
+        return Bookmark.objects.create(**validated_data) 
+
 
 class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
@@ -15,28 +22,12 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('post', 'content')
+        fields = ('title', 'content', 'tag', 'pub_date')
 
 class TagSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        return Tag.objects.create(**validated_data) 
-
     class Meta:
         model = Tag 
         fields = ('tag', 'pub_date')
 
-class Tag2BookmarkSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        return Tag2Bookmark.objects.create(**validated_data) 
-
-    class Meta:
-        model = Tag2Bookmark
-        fields = ('tag', 'bookmark', 'is_linked', 'pub_date')
-
-class Tag2PostSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        return Tag2Post.objects.create(**validated_data) 
-
-    class Meta:
-        model = Tag2Post
-        fields = ('tag', 'post', 'is_linked', 'pub_date')
+        return Tag.objects.create(**validated_data) 
