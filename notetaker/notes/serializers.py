@@ -27,7 +27,7 @@ class PostSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag 
-        fields = ('tag', 'pub_date')
+        fields = ('name', 'pub_date')
 
     def create(self, validated_data):
         return Tag.objects.create(**validated_data) 

@@ -47,7 +47,7 @@ python manage.py migrate
 # Using the shell
 python manage.py shell
 
->>>  from notes.models import Bookmark, Post, Tag, Tag2Bookmark, Tag2Post 
+>>>  from notes.models import Bookmark, Post, Tag
 >>>  from django.utils import timezone
 
 >>>  bookmark1 = Bookmark(bookmark="Bookmark1", url="www.google.com", pub_date=timezone.now())
@@ -57,22 +57,6 @@ python manage.py shell
 >>>  tag1 = Tag(tag="tag1", pub_date=timezone.now())
 >>>  tag1.save()
 
->>>  t2b = Tag2Bookmark(tag=tag1, bookmark=bookmark1, pub_date=timezone.now())
->>>  t2b.save()
->>>  t2p = Tag2Post(tag=tag1, post=post1, is_linked=False, pub_date=timezone.now())
->>>  t2p.save()
-
->>>  Bookmark.objects.filter(id=1)
->>>  Bookmark.objects.get(pk=1)
-
->>>  t = Tag.objects.get(pk=2)
->>>  t.tag2bookmark_set.all()
->>>  p = Post.objects.get(pk=2)
->>>  p.tag2post_set.all()
->>>  tag2=Tag(tag='test',pub_date=timezone.now())
->>>  tag2.save()
->>>  p.tag2post_set.create(tag=tag2,is_linked=False,pub_date=timezone.now())
->>>  quit()
 ```
 ```bash
 # Create admin user
