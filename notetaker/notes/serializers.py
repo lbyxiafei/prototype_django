@@ -5,7 +5,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
     tag = serializers.SlugRelatedField(
         many = True,
         read_only = True,
-        slug_field = 'tag'
+        slug_field = 'name'
     )
 
     class Meta:
@@ -17,17 +17,17 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        return Post.objects.create(**validated_data) 
-
     class Meta:
         model = Post
         fields = ('title', 'content', 'tag', 'pub_date')
 
+    def create(self, validated_data):
+        return Post.objects.create(**validated_data) 
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag 
-        fields = ('name', 'pub_date')
+        fields = ('name', 'bookmark', 'pub_date')
 
     def create(self, validated_data):
         return Tag.objects.create(**validated_data) 

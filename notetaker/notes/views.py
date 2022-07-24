@@ -7,7 +7,7 @@ from rest_framework import status
 from notes.models import Bookmark
 from notes.serializers import BookmarkSerializer
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def bookmarks(request):
     if request.method == 'GET':
         bookmarks = Bookmark.objects.all()
@@ -22,6 +22,11 @@ def bookmarks(request):
         print(bookmarks_serializer)
         if bookmarks_serializer.is_valid():
             bookmarks_serializer.save()
+            print(bookmarks_serializer)
             return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(bookmarks_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        count = Bookmark.objects.all().delete()
+        return JsonResponse({'message': '{} Bookmarks were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+ 
    
