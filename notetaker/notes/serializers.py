@@ -28,14 +28,14 @@ class BookmarkSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        print('???')
-        # print(validated_data)
+        print('?')
+        # for tag in validated_data['tag']:
+        #     Tag.objects.create(tag)
+        print('??')
         for tag in validated_data['tag']:
-            Tag.objects.create
             print(tag, type(tag), tag.name)
         print('???')
         return Bookmark.objects.create(**validated_data) 
-
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
