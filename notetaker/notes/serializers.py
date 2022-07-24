@@ -2,11 +2,11 @@ from rest_framework import serializers
 from notes.models import Bookmark, Post, Tag
 
 class BookmarkSerializer(serializers.ModelSerializer):
-    tag = serializers.SlugRelatedField(
-        many = True,
-        read_only = True,
-        slug_field = 'name'
-    )
+    # tag = serializers.SlugRelatedField(
+    #     many = True,
+    #     read_only = True,
+    #     slug_field = 'tag'
+    # )
 
     class Meta:
         model = Bookmark
