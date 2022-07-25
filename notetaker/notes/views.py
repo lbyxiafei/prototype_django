@@ -19,10 +19,12 @@ def bookmarks(request):
     elif request.method == 'POST':
         bookmarks_data = JSONParser().parse(request)
         bookmarks_serializer = BookmarkSerializer(data=bookmarks_data)
+        print(1)
         if bookmarks_serializer.is_valid():
+            print(2)
             bookmarks_serializer.save()
-            print(bookmarks_serializer)
             return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 
+        print(3)
         return JsonResponse(bookmarks_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         count = Bookmark.objects.all().delete()
