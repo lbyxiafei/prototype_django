@@ -27,7 +27,7 @@ def bookmarks(request):
             print(tag)
             tg[0].save()
             print(3)
-            # bmk.tag.add(tg[0])
+            bmk.tag.add(tg[0])
         print(4)
         bookmarks_serializer = BookmarkSerializer(bmk)
         print(bookmarks_serializer)
