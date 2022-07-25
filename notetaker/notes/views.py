@@ -22,12 +22,12 @@ def bookmarks(request):
         bmk = Bookmark(title=bookmarks_data['title'], url=bookmarks_data['url'])
         bmk.save()
         print(2)
-        for tag in bookmarks_data['tag']:
-            tg = Tag.objects.get_or_create(name=tag)
-            print(tag)
+        for tag_name in bookmarks_data['tags']:
+            tg = Tag.objects.get_or_create(name=tag_name)
+            print(tag_name)
             tg[0].save()
             print(3)
-            bmk.tag.add(tg[0])
+            bmk.tags.add(tg[0])
         print(4)
         bookmarks_serializer = BookmarkSerializer(bmk)
         print(bookmarks_serializer)
