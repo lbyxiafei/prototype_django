@@ -18,20 +18,14 @@ def bookmarks(request):
         return JsonResponse(bookmarks_serializer.data, safe=False)
     elif request.method == 'POST':
         bookmarks_data = JSONParser().parse(request)
-        print(1)
         bmk = Bookmark(title=bookmarks_data['title'], url=bookmarks_data['url'])
         bmk.save()
-        print(2)
         for tag_name in bookmarks_data['tags']:
             tg = Tag.objects.get_or_create(name=tag_name)
-            print(tag_name)
             tg[0].save()
-            print(3)
             bmk.tags.add(tg[0])
-        print(4)
-        bookmarks_serializer = BookmarkSerializer(bmk)
-        print(bookmarks_serializer)
-        return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 
+        # bookmarks_serializer = BookmarkSerializer(bmk)
+        return JsonResponse(bmk, status=status.HTTP_201_CREATED) 
     elif request.method == 'DELETE':
         count = Bookmark.objects.all().delete()
         return JsonResponse({'message': '{} Bookmarks were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)

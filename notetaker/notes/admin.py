@@ -1,3 +1,6 @@
 from django.contrib import admin
+from notes.models import Bookmark, Post, Tag
 
-# Register your models here.
+admin.site.register(Bookmark)
+admin.site.register(Post)
+admin.site.register(Tag)

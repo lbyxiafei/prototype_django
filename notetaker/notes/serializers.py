@@ -14,11 +14,11 @@ class CreatableSlugRelatedField(serializers.SlugRelatedField):
             self.fail('invalid')
 
 class BookmarkSerializer(serializers.ModelSerializer):
-    # tag = serializers.SlugRelatedField(
-    #     many = True,
-    #     queryset = Tag.objects.all(),
-    #     slug_field = 'name'
-    # )
+    tags = serializers.SlugRelatedField(
+        many = True,
+        queryset = Tag.objects.all(),
+        slug_field = 'name'
+    )
 
     class Meta:
         model = Bookmark
@@ -36,11 +36,11 @@ class PostSerializer(serializers.ModelSerializer):
         return Post.objects.create(**validated_data) 
 
 class TagSerializer(serializers.ModelSerializer):
-    bookmarks = serializers.SlugRelatedField(
-        many = True,
-        queryset = Bookmark.objects.all(),
-        slug_field = 'title'
-    )
+    # bookmarks = serializers.SlugRelatedField(
+    #     many = True,
+    #     queryset = Bookmark.objects.all(),
+    #     slug_field = 'title'
+    # )
 
     class Meta:
         model = Tag 
