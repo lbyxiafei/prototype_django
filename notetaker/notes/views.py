@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
 
-from notes.models import Bookmark
+from notes.models import Bookmark,Tag
 from notes.serializers import BookmarkSerializer
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -18,14 +18,20 @@ def bookmarks(request):
         return JsonResponse(bookmarks_serializer.data, safe=False)
     elif request.method == 'POST':
         bookmarks_data = JSONParser().parse(request)
-        bookmarks_serializer = BookmarkSerializer(data=bookmarks_data)
         print(1)
-        if bookmarks_serializer.is_valid():
-            print(2)
-            bookmarks_serializer.save()
-            return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 
-        print(3)
-        return JsonResponse(bookmarks_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        bmk = Bookmark(title=bookmarks_data['title'], url=bookmarks_data['url'])
+        bmk.save()
+        print(2)
+        for tag in bookmarks_data['tag']:
+            tg = Tag.objects.get_or_create(name=tag)
+            print(tag)
+            tg[0].save()
+            print(3)
+            # bmk.tag.add(tg[0])
+        print(4)
+        bookmarks_serializer = BookmarkSerializer(bmk)
+        print(bookmarks_serializer)
+        return JsonResponse(bookmarks_serializer.data, status=status.HTTP_201_CREATED) 
     elif request.method == 'DELETE':
         count = Bookmark.objects.all().delete()
         return JsonResponse({'message': '{} Bookmarks were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)

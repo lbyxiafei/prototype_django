@@ -24,20 +24,8 @@ class BookmarkSerializer(serializers.ModelSerializer):
         model = Bookmark
         fields = ('title', 'url', 'tag', 'pub_date')
 
-    def validate(self, data):
-        print('validate')
-        return data
-
     def create(self, validated_data):
-        print('create')
-        bmk = Bookmark(title=validated_data['title'], url=validated_data['url'])
-        bmk.save()
-        for tag in validated_data['tag']:
-            tg = Tag(name=tag)
-            tg.save()
-            bmk.tag.add(tg)
-        #t = Bookmark.objects.create(**validated_data) 
-        return bmk;
+        return Bookmark.objects.create(**validated_data) 
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
