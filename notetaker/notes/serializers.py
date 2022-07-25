@@ -2,7 +2,6 @@ from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from notes.models import Bookmark, Post, Tag
-from notetaker.notes.views import bookmarks
 
 class CreatableSlugRelatedField(serializers.SlugRelatedField):
     def to_internal_value(self, data):
