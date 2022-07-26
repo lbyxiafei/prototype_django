@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from django.http import Http404
+from rest_framework import viewsets,status
 from rest_framework.response import Response
 
 from notes.models import Bookmark,Tag
@@ -25,6 +26,14 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
@@ -32,3 +41,11 @@ class TagViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         tags = Tag.objects.all()
         return tags
+    
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
