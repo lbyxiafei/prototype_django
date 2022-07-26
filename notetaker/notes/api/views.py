@@ -1,33 +1,36 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser 
-from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 from notes.models import Bookmark,Tag
-from .serializers import BookmarkSerializer
+from .serializers import BookmarkSerializer, TagSerializer
 
-@api_view(['GET', 'POST', 'DELETE'])
-def bookmarks(request):
-    if request.method == 'GET':
+class BookmarkViewSet(viewsets.ModelViewSet):
+    serializer_class = BookmarkSerializer 
+
+    def get_queryset(self):
         bookmarks = Bookmark.objects.all()
-        bookmark = request.query_params.get('bookmark', None)
-        if bookmark is not None:
-            bookmarks = bookmarks.filter(bookmark__icontains=bookmark)
-        bookmarks_serializer = BookmarkSerializer(bookmarks, many=True)
-        return JsonResponse(bookmarks_serializer.data, safe=False)
-    elif request.method == 'POST':
-        bookmarks_data = JSONParser().parse(request)
-        bmk = Bookmark(title=bookmarks_data['title'], url=bookmarks_data['url'])
-        bmk.save()
-        for tag_name in bookmarks_data['tags']:
-            tg = Tag.objects.get_or_create(name=tag_name)
-            tg[0].save()
-            bmk.tags.add(tg[0])
-        # bookmarks_serializer = BookmarkSerializer(bmk)
-        return JsonResponse(bmk, status=status.HTTP_201_CREATED) 
-    elif request.method == 'DELETE':
-        count = Bookmark.objects.all().delete()
-        return JsonResponse({'message': '{} Bookmarks were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
- 
-   
+        return bookmarks
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        new_bookmark = Bookmark.objects.create(
+            title=data["title"], url=data['url'])
+
+        new_bookmark.save()
+
+        for tag in data["tags"]:
+            tag_obj = Tag.objects.get(name=tag["name"])
+            new_bookmark.modules.add(tag_obj)
+
+        serializer = BookmarkSerializer(new_bookmark)
+
+        return Response(serializer.data)
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    serializer_class = TagSerializer
+
+    def get_queryset(self):
+        tags = Tag.objects.all()
+        return tags
