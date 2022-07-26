@@ -63,6 +63,12 @@ class TagViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         tags = Tag.objects.all()
         return tags
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        tag_obj = Tag.objects.get_or_create(name=data["name"])
+        serializer = TagSerializer(tag_obj[0])
+        return Response(serializer.data)
     
     def destroy(self, request, *args, **kwargs):
         try:
