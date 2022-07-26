@@ -7,11 +7,13 @@ class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookmark
         fields = ('title', 'url', 'tags', 'pub_date')
+        depth = 1
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('title', 'content', 'tags', 'pub_date')
+        depth = 1
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

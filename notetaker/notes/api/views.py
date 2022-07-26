@@ -13,15 +13,13 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-
         new_bookmark = Bookmark.objects.create(
             title=data["title"], url=data['url'])
-
         new_bookmark.save()
 
         for tag in data["tags"]:
-            tag_obj = Tag.objects.get(name=tag["name"])
-            new_bookmark.modules.add(tag_obj)
+            tag_obj = Tag.objects.get_or_create(name=tag["name"])
+            new_bookmark.tags.add(tag_obj[0])
 
         serializer = BookmarkSerializer(new_bookmark)
 
