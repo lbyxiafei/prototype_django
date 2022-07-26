@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from notes.models import Bookmark,Tag
-from notes.serializers import BookmarkSerializer
+from .serializers import BookmarkSerializer
 
 @api_view(['GET', 'POST', 'DELETE'])
 def bookmarks(request):
