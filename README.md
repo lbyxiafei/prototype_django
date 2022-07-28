@@ -87,6 +87,10 @@ CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
 ## Docker CMD
+- `docker image build -t 880413/python-django`
+- `docker containter run -d -p 8000:8000 880413/python-django`
+- `docker push 880413/python-django`
+
 - `docker build --tag python-django .`
 - `docker run --publish 8000:8000 python-django`
 
