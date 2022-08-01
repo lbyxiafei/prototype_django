@@ -24,4 +24,4 @@ services:
       - db
 
 volumes:
-  - notes-db:
+  notes-db:
