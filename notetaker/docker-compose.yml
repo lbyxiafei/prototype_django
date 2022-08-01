@@ -9,6 +9,7 @@ services:
       - POSTGRES_DB=notes
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST=db
   web:
     build: .
     command: >
@@ -21,6 +22,7 @@ services:
       - POSTGRES_NAME=notes
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_HOST=db
     depends_on:
       - db
 
