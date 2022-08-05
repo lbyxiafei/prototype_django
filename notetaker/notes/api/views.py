@@ -1,4 +1,3 @@
-from email import message
 from django.http import Http404
 from rest_framework import viewsets,status
 from rest_framework.response import Response
@@ -10,8 +9,16 @@ class BookmarkViewSet(viewsets.ModelViewSet):
     serializer_class = BookmarkSerializer 
 
     def get_queryset(self):
-        bookmarks = Bookmark.objects.all()
-        return bookmarks
+        queryset = Bookmark.objects.all()
+
+        title = self.request.query_params.get('title')
+        if title is not None:
+            queryset = queryset.filter(title=title)
+        tagName = self.request.query_params.get('tag')
+        if tagName is not None:
+            queryset = queryset.filter(tags__name=tagName)
+
+        return queryset
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -72,8 +79,16 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer 
 
     def get_queryset(self):
-        posts = Post.objects.all()
-        return posts
+        queryset = Post.objects.all()
+
+        title = self.request.query_params.get('title')
+        if title is not None:
+            queryset = queryset.filter(title=title)
+        tagName = self.request.query_params.get('tag')
+        if tagName is not None:
+            queryset = queryset.filter(tags__name=tagName)
+
+        return queryset
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -134,8 +149,11 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
 
     def get_queryset(self):
-        tags = Tag.objects.all()
-        return tags
+        queryset = Tag.objects.all()
+        tagName = self.request.query_params.get('name')
+        if tagName is not None:
+            queryset = queryset.filter(name=tagName)
+        return queryset
 
     def create(self, request, *args, **kwargs):
         data = request.data
