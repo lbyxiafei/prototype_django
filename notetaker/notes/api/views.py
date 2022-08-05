@@ -1,3 +1,4 @@
+from email import message
 from django.http import Http404
 from rest_framework import viewsets,status
 from rest_framework.response import Response
@@ -63,9 +64,9 @@ class BookmarkViewSet(viewsets.ModelViewSet):
         try:
             instance = self.get_object()
             self.perform_destroy(instance)
+            return Response({"message":"Item has been deleted"})
         except Http404:
-            pass
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer 
@@ -125,9 +126,9 @@ class PostViewSet(viewsets.ModelViewSet):
         try:
             instance = self.get_object()
             self.perform_destroy(instance)
+            return Response({"message":"Item has been deleted"})
         except Http404:
-            pass
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
@@ -146,6 +147,6 @@ class TagViewSet(viewsets.ModelViewSet):
         try:
             instance = self.get_object()
             self.perform_destroy(instance)
+            return Response({"message":"Item has been deleted"})
         except Http404:
-            pass
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
