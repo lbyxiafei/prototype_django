@@ -84,6 +84,42 @@ class PostViewSet(viewsets.ModelViewSet):
             new_post.tags.add(tag_obj[0])
         serializer = PostSerializer(new_post)
         return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        post_object = self.get_object()
+        data = request.data
+
+        post_object.title = data["title"]
+        post_object.content = data["content"]
+        post_object.tags.clear()
+
+        for tag in data["tags"]:
+            tag_obj = Tag.objects.get_or_create(name=tag["name"])
+            post_object.tags.add(tag_obj[0]);
+
+        post_object.save()
+
+        serializer = PostSerializer(post_object)
+        return Response(serializer.data)
+        
+    def partial_update(self, request, *args, **kwargs):
+        post_object = self.get_object()
+        data = request.data
+
+        post_object.title = data.get("title", post_object.title)
+        post_object.content = data.get("content", post_object.content)
+
+        post_object.tags.clear()
+        if "tags" in data:
+            tags = data.get("tags")
+            for tag in tags:
+                tag_obj = Tag.objects.get_or_create(name=tag["name"])
+                post_object.tags.add(tag_obj[0]);
+
+        post_object.save()
+
+        serializer = PostSerializer(post_object)
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         try:
