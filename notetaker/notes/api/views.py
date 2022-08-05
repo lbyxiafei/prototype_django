@@ -40,6 +40,24 @@ class BookmarkViewSet(viewsets.ModelViewSet):
         serializer = BookmarkSerializer(bookmark_object)
         return Response(serializer.data)
         
+    def partial_update(self, request, *args, **kwargs):
+        bookmark_object = self.get_object()
+        data = request.data
+
+        bookmark_object.title = data.get("title", bookmark_object.title)
+        bookmark_object.url = data.get("url", bookmark_object.url)
+
+        bookmark_object.tags.clear()
+        if "tags" in data:
+            tags = data.get("tags")
+            for tag in tags:
+                tag_obj = Tag.objects.get_or_create(name=tag["name"])
+                bookmark_object.tags.add(tag_obj[0]);
+
+        bookmark_object.save()
+
+        serializer = BookmarkSerializer(bookmark_object)
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         try:
