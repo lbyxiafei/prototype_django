@@ -22,6 +22,24 @@ class BookmarkViewSet(viewsets.ModelViewSet):
             new_bookmark.tags.add(tag_obj[0])
         serializer = BookmarkSerializer(new_bookmark)
         return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        bookmark_object = self.get_object()
+        data = request.data
+
+        bookmark_object.title = data["title"]
+        bookmark_object.url = data["url"]
+        bookmark_object.tags.clear()
+
+        for tag in data["tags"]:
+            tag_obj = Tag.objects.get_or_create(name=tag["name"])
+            bookmark_object.tags.add(tag_obj[0]);
+
+        bookmark_object.save()
+
+        serializer = BookmarkSerializer(bookmark_object)
+        return Response(serializer.data)
+        
 
     def destroy(self, request, *args, **kwargs):
         try:
