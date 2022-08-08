@@ -57,10 +57,13 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
+    "http://127.0.0.1",
     "http://24.17.206.63",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http:\/\/127.0.0.1:*([0-9]+)?$",
+    r"^https:\/\/127.0.0.1:*([0-9]+)?$",
     r"^http:\/\/localhost:*([0-9]+)?$",
     r"^https:\/\/localhost:*([0-9]+)?$",
     r"^http:\/\/24.17.206.63:*([0-9]+)?$",
