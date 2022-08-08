@@ -57,9 +57,14 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost",
-    "http://localhost:3000",
     "http://24.17.206.63",
-    "http://24.17.206.63:3000",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http:\/\/localhost:*([0-9]+)?$",
+    r"^https:\/\/localhost:*([0-9]+)?$",
+    r"^http:\/\/24.17.206.63:*([0-9]+)?$",
+    r"^https:\/\/24.17.206.63:*([0-9]+)?$",
 ]
 
 ROOT_URLCONF = 'notetaker.urls'
